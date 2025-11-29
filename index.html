@@ -1,0 +1,1355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CarbonGo - Carbon Credit Marketplace</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-green: #16A34A;
+            --dark-green: #15803D;
+            --light-green: #22C55E;
+            --bg-white: #FFFFFF;
+            --text-black: #1F2937;
+            --text-grey: #6B7280;
+            --light-grey: #F3F4F6;
+            --border-grey: #E5E7EB;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            color: var(--text-black);
+            line-height: 1.6;
+            background: var(--bg-white);
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        nav.scrolled {
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-green);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .logo-icon {
+            width: 32px;
+            height: 32px;
+            background: var(--primary-green);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+            align-items: center;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-black);
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary-green);
+        }
+
+        .btn-primary {
+            background: var(--primary-green);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-primary:hover {
+            background: var(--dark-green);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(22, 163, 74, 0.3);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--primary-green);
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            border: 2px solid var(--primary-green);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .btn-secondary:hover {
+            background: var(--primary-green);
+            color: white;
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--text-black);
+        }
+
+        /* Hero Section */
+        .hero {
+            margin-top: 80px;
+            padding: 6rem 2rem;
+            background: linear-gradient(135deg, #F0FDF4 0%, #DCFCE7 100%);
+            text-align: center;
+        }
+
+        .hero-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin-bottom: 1.5rem;
+            color: var(--text-black);
+            line-height: 1.2;
+        }
+
+        .hero-highlight {
+            color: var(--primary-green);
+        }
+
+        .hero p {
+            font-size: 1.25rem;
+            color: var(--text-grey);
+            margin-bottom: 2rem;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .stats-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            max-width: 1000px;
+            margin: 4rem auto 0;
+            padding: 0 2rem;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            transition: transform 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--primary-green);
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: var(--text-grey);
+            font-weight: 500;
+        }
+
+        /* Section Styles */
+        section {
+            padding: 5rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .section-header h2 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--text-black);
+        }
+
+        .section-header p {
+            font-size: 1.125rem;
+            color: var(--text-grey);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Features Grid */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+        }
+
+        .feature-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 16px;
+            border: 2px solid var(--border-grey);
+            transition: all 0.3s ease;
+        }
+
+        .feature-card:hover {
+            border-color: var(--primary-green);
+            transform: translateY(-5px);
+            box-shadow: 0 8px 30px rgba(22, 163, 74, 0.15);
+        }
+
+        .feature-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--primary-green), var(--light-green));
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.75rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .feature-card h3 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--text-black);
+        }
+
+        .feature-card p {
+            color: var(--text-grey);
+            line-height: 1.7;
+        }
+
+        /* How It Works */
+        .steps-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 3rem;
+            margin-top: 3rem;
+        }
+
+        .step {
+            text-align: center;
+            position: relative;
+        }
+
+        .step-number {
+            width: 60px;
+            height: 60px;
+            background: var(--primary-green);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin: 0 auto 1.5rem;
+        }
+
+        .step h3 {
+            font-size: 1.25rem;
+            margin-bottom: 1rem;
+            color: var(--text-black);
+        }
+
+        .step p {
+            color: var(--text-grey);
+        }
+
+        /* Marketplace */
+        .marketplace-filters {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            padding: 0.75rem 1.5rem;
+            border: 2px solid var(--border-grey);
+            background: white;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .filter-btn:hover, .filter-btn.active {
+            border-color: var(--primary-green);
+            background: var(--primary-green);
+            color: white;
+        }
+
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 2rem;
+        }
+
+        .project-card {
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            border: 2px solid var(--border-grey);
+            transition: all 0.3s ease;
+        }
+
+        .project-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.1);
+            border-color: var(--primary-green);
+        }
+
+        .project-image {
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(135deg, #10B981, #059669);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+        }
+
+        .project-content {
+            padding: 1.5rem;
+        }
+
+        .project-tag {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            background: #DCFCE7;
+            color: var(--primary-green);
+            border-radius: 6px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .project-card h3 {
+            font-size: 1.25rem;
+            margin-bottom: 0.75rem;
+            color: var(--text-black);
+        }
+
+        .project-card p {
+            color: var(--text-grey);
+            margin-bottom: 1rem;
+            font-size: 0.95rem;
+        }
+
+        .project-stats {
+            display: flex;
+            justify-content: space-between;
+            padding-top: 1rem;
+            border-top: 1px solid var(--border-grey);
+            margin-bottom: 1rem;
+        }
+
+        .project-stat {
+            text-align: center;
+        }
+
+        .project-stat-value {
+            font-weight: 700;
+            color: var(--text-black);
+            font-size: 1.125rem;
+        }
+
+        .project-stat-label {
+            font-size: 0.75rem;
+            color: var(--text-grey);
+            text-transform: uppercase;
+        }
+
+        /* Dashboard */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .dashboard-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 16px;
+            border: 2px solid var(--border-grey);
+        }
+
+        .dashboard-card h3 {
+            font-size: 1.125rem;
+            color: var(--text-grey);
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+
+        .dashboard-value {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--primary-green);
+            margin-bottom: 0.5rem;
+        }
+
+        .dashboard-change {
+            color: var(--primary-green);
+            font-size: 0.875rem;
+            font-weight: 600;
+        }
+
+        .transactions-table {
+            background: white;
+            border-radius: 16px;
+            border: 2px solid var(--border-grey);
+            overflow: hidden;
+        }
+
+        .transactions-table h3 {
+            padding: 1.5rem;
+            border-bottom: 2px solid var(--border-grey);
+            font-size: 1.25rem;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 1rem 1.5rem;
+            text-align: left;
+        }
+
+        th {
+            background: var(--light-grey);
+            font-weight: 600;
+            color: var(--text-grey);
+            font-size: 0.875rem;
+            text-transform: uppercase;
+        }
+
+        tr:not(:last-child) td {
+            border-bottom: 1px solid var(--border-grey);
+        }
+
+        .status-badge {
+            padding: 0.25rem 0.75rem;
+            border-radius: 6px;
+            font-size: 0.875rem;
+            font-weight: 600;
+        }
+
+        .status-completed {
+            background: #DCFCE7;
+            color: var(--primary-green);
+        }
+
+        .status-pending {
+            background: #FEF3C7;
+            color: #D97706;
+        }
+
+        /* Contact Form */
+        .contact-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+        }
+
+        .contact-info {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .contact-item {
+            display: flex;
+            gap: 1rem;
+            align-items: flex-start;
+        }
+
+        .contact-icon {
+            width: 50px;
+            height: 50px;
+            background: var(--primary-green);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.25rem;
+            flex-shrink: 0;
+        }
+
+        .contact-item h3 {
+            font-size: 1.125rem;
+            margin-bottom: 0.5rem;
+            color: var(--text-black);
+        }
+
+        .contact-item p {
+            color: var(--text-grey);
+        }
+
+        .contact-form {
+            background: white;
+            padding: 2rem;
+            border-radius: 16px;
+            border: 2px solid var(--border-grey);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: var(--text-black);
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid var(--border-grey);
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary-green);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        /* Team Section */
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+
+        .team-member {
+            text-align: center;
+        }
+
+        .team-photo {
+            width: 150px;
+            height: 150px;
+            background: linear-gradient(135deg, var(--primary-green), var(--light-green));
+            border-radius: 50%;
+            margin: 0 auto 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            color: white;
+        }
+
+        .team-member h3 {
+            font-size: 1.25rem;
+            margin-bottom: 0.5rem;
+            color: var(--text-black);
+        }
+
+        .team-member p {
+            color: var(--text-grey);
+            font-size: 0.95rem;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--text-black);
+            color: white;
+            padding: 3rem 2rem 1rem;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 3rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-section h3 {
+            margin-bottom: 1rem;
+            color: var(--primary-green);
+        }
+
+        .footer-section ul {
+            list-style: none;
+        }
+
+        .footer-section ul li {
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-section a {
+            color: #9CA3AF;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-section a:hover {
+            color: var(--primary-green);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid #374151;
+            color: #9CA3AF;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            .nav-links {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: white;
+                flex-direction: column;
+                padding: 2rem;
+                box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            }
+
+            .nav-links.active {
+                display: flex;
+            }
+
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero p {
+                font-size: 1.125rem;
+            }
+
+            .section-header h2 {
+                font-size: 2rem;
+            }
+
+            .contact-container {
+                grid-template-columns: 1fr;
+            }
+
+            .stats-container {
+                grid-template-columns: 1fr;
+            }
+
+            table {
+                font-size: 0.875rem;
+            }
+
+            th, td {
+                padding: 0.75rem;
+            }
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .fade-in-up {
+            animation: fadeInUp 0.6s ease-out;
+        }
+
+        /* Smooth Scroll */
+        html {
+            scroll-behavior: smooth;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav id="navbar">
+        <div class="nav-container">
+            <a href="#home" class="logo">
+                <div class="logo-icon">CG</div>
+                CarbonGo
+            </a>
+            <button class="mobile-menu-btn" onclick="toggleMenu()">☰</button>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#marketplace">Marketplace</a></li>
+                <li><a href="#dashboard">Dashboard</a></li>
+                <li><a href="#contact">Contact</a></li>
+                <li><a href="#" class="btn-primary" onclick="showLoginModal()">Get Started</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="hero-content fade-in-up">
+            <h1>Trade Carbon Credits, <span class="hero-highlight">Build a Sustainable Future</span></h1>
+            <p>CarbonGo is the next-generation marketplace connecting businesses and individuals to verified carbon offset projects. Track, trade, and reduce your carbon footprint with transparency and trust.</p>
+            <div class="hero-buttons">
+                <a href="#marketplace" class="btn-primary">Explore Marketplace</a>
+                <a href="#about" class="btn-secondary">Learn More</a>
+            </div>
+        </div>
+        <div class="stats-container">
+            <div class="stat-card">
+                <div class="stat-number">2.5M+</div>
+                <div class="stat-label">Credits Traded</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">850K</div>
+                <div class="stat-label">Tons CO₂ Offset</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">1,200+</div>
+                <div class="stat-label">Active Partners</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">45+</div>
+                <div class="stat-label">Countries</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features">
+        <div class="section-header">
+            <h2>Why Choose CarbonGo?</h2>
+            <p>Powerful features designed to make carbon trading simple, transparent, and impactful</p>
+        </div>
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">📊</div>
+                <h3>Track Emissions</h3>
+                <p>Monitor your carbon footprint in real-time with our advanced analytics dashboard. Get detailed insights into your environmental impact across all operations.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">✅</div>
+                <h3>Buy Verified Credits</h3>
+                <p>Access a curated marketplace of certified carbon offset projects. Every credit is verified by international standards including Gold Standard and VCS.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🌱</div>
+                <h3>Offset Footprint</h3>
+                <p>Neutralize your carbon emissions by investing in renewable energy, reforestation, and conservation projects worldwide.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">📈</div>
+                <h3>Analytics Dashboard</h3>
+                <p>Visualize your sustainability journey with comprehensive reports, transaction history, and impact metrics that matter to stakeholders.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🔒</div>
+                <h3>Blockchain Security</h3>
+                <p>Every transaction is recorded on an immutable blockchain ledger, ensuring transparency, traceability, and fraud prevention.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🤝</div>
+                <h3>Global Network</h3>
+                <p>Connect with verified project developers, corporate buyers, and sustainability experts across 45+ countries.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works -->
+    <section id="how-it-works" style="background: var(--light-grey);">
+        <div class="section-header">
+            <h2>How It Works</h2>
+            <p>Start your sustainability journey in three simple steps</p>
+        </div>
+        <div class="steps-container">
+            <div class="step">
+                <div class="step-number">1</div>
+                <h3>Create Account</h3>
+                <p>Sign up in minutes and complete your profile. Choose between individual, business, or project developer accounts.</p>
+            </div>
+            <div class="step">
+                <div class="step-number">2</div>
+                <h3>Browse Projects</h3>
+                <p>Explore verified carbon offset projects across renewable energy, forestry, and conservation initiatives worldwide.</p>
+            </div>
+            <div class="step">
+                <div class="step-number">3</div>
+                <h3>Trade & Track</h3>
+                <p>Purchase carbon credits, monitor your impact, and generate compliance reports for stakeholders and regulators.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about">
+        <div class="section-header">
+            <h2>About CarbonGo</h2>
+            <p>Pioneering the future of carbon markets</p>
+        </div>
+        <div style="max-width: 800px; margin: 0 auto; text-align: center; margin-bottom: 4rem;">
+            <p style="font-size: 1.125rem; color: var(--text-grey); line-height: 1.8; margin-bottom: 1.5rem;">
+                CarbonGo was founded with a singular mission: to democratize access to carbon markets and accelerate the global transition to net-zero emissions. We believe that every organization and individual should have the tools to measure, reduce, and offset their environmental impact.
+            </p>
+            <p style="font-size: 1.125rem; color: var(--text-grey); line-height: 1.8;">
+                Our platform combines cutting-edge technology with rigorous verification standards to create a trusted marketplace where sustainability meets profitability. We're building the infrastructure for a carbon-neutral future.
+            </p>
+        </div>
+
+        <div class="section-header" style="margin-top: 4rem;">
+            <h2>Our Mission & Vision</h2>
+        </div>
+        <div class="features-grid" style="margin-bottom: 4rem;">
+            <div class="feature-card">
+                <div class="feature-icon">🎯</div>
+                <h3>Mission</h3>
+                <p>To provide transparent, accessible, and efficient carbon trading solutions that empower businesses and individuals to take meaningful climate action.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🔭</div>
+                <h3>Vision</h3>
+                <p>A world where carbon neutrality is achievable for all, supported by technology-driven markets that reward environmental stewardship.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">💡</div>
+                <h3>Values</h3>
+                <p>Transparency, integrity, innovation, and impact. We're committed to building trust through verified data and measurable results.</p>
+            </div>
+        </div>
+
+        <div class="section-header">
+            <h2>Meet Our Team</h2>
+            <p>Experts in sustainability, technology, and finance</p>
+        </div>
+        <div class="team-grid">
+            <div class="team-member">
+                <div class="team-photo">👨‍💼</div>
+                <h3>Sarah Chen</h3>
+                <p>CEO & Co-Founder</p>
+            </div>
+            <div class="team-member">
+                <div class="team-photo">👩‍💻</div>
+                <h3>Michael Rodriguez</h3>
+                <p>CTO & Co-Founder</p>
+            </div>
+            <div class="team-member">
+                <div class="team-photo">👨‍🔬</div>
+                <h3>Dr. James Wilson</h3>
+                <p>Chief Sustainability Officer</p>
+            </div>
+            <div class="team-member">
+                <div class="team-photo">👩‍💼</div>
+                <h3>Emily Thompson</h3>
+                <p>Head of Marketplace</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Marketplace Section -->
+    <section id="marketplace" style="background: var(--light-grey);">
+        <div class="section-header">
+            <h2>Carbon Credit Marketplace</h2>
+            <p>Discover verified projects making real environmental impact</p>
+        </div>
+        <div class="marketplace-filters">
+            <button class="filter-btn active">All Projects</button>
+            <button class="filter-btn">Renewable Energy</button>
+            <button class="filter-btn">Reforestation</button>
+            <button class="filter-btn">Conservation</button>
+            <button class="filter-btn">Clean Water</button>
+        </div>
+        <div class="projects-grid">
+            <div class="project-card">
+                <div class="project-image">🌲</div>
+                <div class="project-content">
+                    <span class="project-tag">Reforestation</span>
+                    <h3>Amazon Rainforest Protection</h3>
+                    <p>Protecting 50,000 hectares of pristine rainforest in Brazil, preventing deforestation and preserving biodiversity.</p>
+                    <div class="project-stats">
+                        <div class="project-stat">
+                            <div class="project-stat-value">$12</div>
+                            <div class="project-stat-label">Per Credit</div>
+                        </div>
+                        <div class="project-stat">
+                            <div class="project-stat-value">45K</div>
+                            <div class="project-stat-label">Available</div>
+                        </div>
+                        <div class="project-stat">
+                            <div class="project-stat-value">VCS</div>
+                            <div class="project-stat-label">Certified</div>
+                        </div>
+                    </div>
+                    <a href="#" class="btn-primary" style="width: 100%; text-align: center; display: block;">View Details</a>
+                </div>
+            </div>
+
+            <div class="project-card">
+                <div class="project-image">☀️</div>
+                <div class="project-content">
+                    <span class="project-tag">Renewable Energy</span>
+                    <h3>Solar Farm India</h3>
+                    <p>100MW solar installation providing clean energy to 200,000 homes in rural India, replacing coal-based power.</p>
+                    <div class="project-stats">
+                        <div class="project-stat">
+                            <div class="project-stat-value">$15</div>
+                            <div class="project-stat-label">Per Credit</div>
+                        </div>
+                        <div class="project-stat">
+                            <div class="project-stat-value">32K</div>
+                            <div class="project-stat-label">Available</div>
+                        </div>
+                        <div class="project-stat">
+                            <div class="project-stat-value">Gold</div>
+                            <div class="project-stat-label">Certified</div>
+                        </div>
+                    </div>
+                    <a href="#" class="btn-primary" style="width: 100%; text-align: center; display: block;">View Details</a>
+                </div>
+            </div>
+
+            <div class="project-card">
+                <div class="project-image">💨</div>
+                <div class="project-content">
+                    <span class="project-tag">Renewable Energy</span>
+                    <h3>Wind Power Kenya</h3>
+                    <p>310MW wind farm generating clean electricity for East Africa's largest grid, reducing fossil fuel dependency.</p>
+                    <div class="project-stats">
+                        <div class="project-stat">
+                            <div class="project-stat-value">$14</div>
+                            <div class="project-stat-label">Per Credit</div>
+                        </div>
+                        <div class="project-stat">
+                            <div class="project-stat-value">28K</div>
+                            <div class="project-stat-label">Available</div>
+                        </div>
+                        <div class="project-stat">
+                            <div class="project-stat-value">VCS</div>
+                            <div class="project-stat-label">Certified</div>
+                        </div>
+                    </div>
+                    <a href="#" class="btn-primary" style="width: 100%; text-align: center; display: block;">View Details</a>
+                </div>
+            </div>
+
+            <div class="project-card">
+                <div class="project-image">🌊</div>
+                <div class="project-content">
+                    <span class="project-tag">Conservation</span>
+                    <h3>Mangrove Restoration</h3>
+                    <p>Restoring 15,000 hectares of coastal mangrove ecosystems in Southeast Asia, protecting communities from storms.</p>
+                    <div class="project-stats">
+                        <div class="project-stat">
+                            <div class="project-stat-value">$18</div>
+                            <div class="project-stat-label">Per Credit</div>
+                        </div>
+                        <div class="project-stat">
+                            <div class="project-stat-value">19K</div>
+                            <div class="project-stat-label">Available</div>
+                        </div>
+                        <div class="project-stat">
+                            <div class="project-stat-value">Gold</div>
+                            <div class="project-stat-label">Certified</div>
+                        </div>
+                    </div>
+                    <a href="#" class="btn-primary" style="width: 100%; text-align: center; display: block;">View Details</a>
+                </div>
+            </div>
+
+            <div class="project-card">
+                <div class="project-image">💧</div>
+                <div class="project-content">
+                    <span class="project-tag">Clean Water</span>
+                    <h3>Clean Cookstoves Africa</h3>
+                    <p>Distributing 500,000 efficient cookstoves to reduce indoor air pollution and deforestation in sub-Saharan Africa.</p>
+                    <div class="project-stats">
+                        <div class="project-stat">
+                            <div class="project-stat-value">$10</div>
+                            <div class="project-stat-label">Per Credit</div>
+                        </div>
+                        <div class="project-stat">
+                            <div class="project-stat-value">52K</div>
+                            <div class="project-stat-label">Available</div>
+                        </div>
+                        <div class="project-stat">
+                            <div class="project-stat-value">Gold</div>
+                            <div class="project-stat-label">Certified</div>
+                        </div>
+                    </div>
+                    <a href="#" class="btn-primary" style="width: 100%; text-align: center; display: block;">View Details</a>
+                </div>
+            </div>
+
+            <div class="project-card">
+                <div class="project-image">🌳</div>
+                <div class="project-content">
+                    <span class="project-tag">Reforestation</span>
+                    <h3>Urban Forest Initiative</h3>
+                    <p>Planting 2 million trees in urban areas across North America to improve air quality and reduce heat islands.</p>
+                    <div class="project-stats">
+                        <div class="project-stat">
+                            <div class="project-stat-value">$11</div>
+                            <div class="project-stat-label">Per Credit</div>
+                        </div>
+                        <div class="project-stat">
+                            <div class="project-stat-value">38K</div>
+                            <div class="project-stat-label">Available</div>
+                        </div>
+                        <div class="project-stat">
+                            <div class="project-stat-value">VCS</div>
+                            <div class="project-stat-label">Certified</div>
+                        </div>
+                    </div>
+                    <a href="#" class="btn-primary" style="width: 100%; text-align: center; display: block;">View Details</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Dashboard Section -->
+    <section id="dashboard">
+        <div class="section-header">
+            <h2>Your Dashboard</h2>
+            <p>Track your carbon credit portfolio and environmental impact</p>
+        </div>
+        <div class="dashboard-grid">
+            <div class="dashboard-card">
+                <h3>Total Credits Owned</h3>
+                <div class="dashboard-value">1,245</div>
+                <div class="dashboard-change">↑ 12% this month</div>
+            </div>
+            <div class="dashboard-card">
+                <h3>CO₂ Offset (Tons)</h3>
+                <div class="dashboard-value">1,245</div>
+                <div class="dashboard-change">↑ 8% this month</div>
+            </div>
+            <div class="dashboard-card">
+                <h3>Portfolio Value</h3>
+                <div class="dashboard-value">$18,675</div>
+                <div class="dashboard-change">↑ 5% this month</div>
+            </div>
+            <div class="dashboard-card">
+                <h3>Active Projects</h3>
+                <div class="dashboard-value">7</div>
+                <div class="dashboard-change">2 new this month</div>
+            </div>
+        </div>
+
+        <div class="transactions-table">
+            <h3>Recent Transactions</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Project</th>
+                        <th>Type</th>
+                        <th>Credits</th>
+                        <th>Amount</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Nov 28, 2025</td>
+                        <td>Solar Farm India</td>
+                        <td>Purchase</td>
+                        <td>250</td>
+                        <td>$3,750</td>
+                        <td><span class="status-badge status-completed">Completed</span></td>
+                    </tr>
+                    <tr>
+                        <td>Nov 25, 2025</td>
+                        <td>Amazon Rainforest</td>
+                        <td>Purchase</td>
+                        <td>500</td>
+                        <td>$6,000</td>
+                        <td><span class="status-badge status-completed">Completed</span></td>
+                    </tr>
+                    <tr>
+                        <td>Nov 22, 2025</td>
+                        <td>Wind Power Kenya</td>
+                        <td>Purchase</td>
+                        <td>300</td>
+                        <td>$4,200</td>
+                        <td><span class="status-badge status-completed">Completed</span></td>
+                    </tr>
+                    <tr>
+                        <td>Nov 20, 2025</td>
+                        <td>Mangrove Restoration</td>
+                        <td>Purchase</td>
+                        <td>195</td>
+                        <td>$3,510</td>
+                        <td><span class="status-badge status-pending">Pending</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" style="background: var(--light-grey);">
+        <div class="section-header">
+            <h2>Get In Touch</h2>
+            <p>Have questions? We're here to help you on your sustainability journey</p>
+        </div>
+        <div class="contact-container">
+            <div class="contact-info">
+                <div class="contact-item">
+                    <div class="contact-icon">📧</div>
+                    <div>
+                        <h3>Email Us</h3>
+                        <p>info@carbongo.com</p>
+                        <p>support@carbongo.com</p>
+                    </div>
+                </div>
+                <div class="contact-item">
+                    <div class="contact-icon">📞</div>
+                    <div>
+                        <h3>Call Us</h3>
+                        <p>+1 (555) 123-4567</p>
+                        <p>Mon-Fri, 9AM-6PM EST</p>
+                    </div>
+                </div>
+                <div class="contact-item">
+                    <div class="contact-icon">📍</div>
+                    <div>
+                        <h3>Visit Us</h3>
+                        <p>123 Sustainability Drive</p>
+                        <p>San Francisco, CA 94102</p>
+                    </div>
+                </div>
+                <div class="contact-item">
+                    <div class="contact-icon">🌐</div>
+                    <div>
+                        <h3>Follow Us</h3>
+                        <p>LinkedIn | Twitter | Instagram</p>
+                        <p>@CarbonGoOfficial</p>
+                    </div>
+                </div>
+            </div>
+            <div class="contact-form">
+                <form onsubmit="handleContactSubmit(event)">
+                    <div class="form-group">
+                        <label>Full Name</label>
+                        <input type="text" placeholder="John Doe" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Email Address</label>
+                        <input type="email" placeholder="john@example.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Company (Optional)</label>
+                        <input type="text" placeholder="Your Company">
+                    </div>
+                    <div class="form-group">
+                        <label>Message</label>
+                        <textarea placeholder="Tell us how we can help..." required></textarea>
+                    </div>
+                    <button type="submit" class="btn-primary" style="width: 100%;">Send Message</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>CarbonGo</h3>
+                <p style="color: #9CA3AF; margin-top: 1rem;">Building the infrastructure for a carbon-neutral future through transparent, accessible carbon markets.</p>
+            </div>
+            <div class="footer-section">
+                <h3>Platform</h3>
+                <ul>
+                    <li><a href="#marketplace">Marketplace</a></li>
+                    <li><a href="#dashboard">Dashboard</a></li>
+                    <li><a href="#">API Documentation</a></li>
+                    <li><a href="#">Pricing</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Company</h3>
+                <ul>
+                    <li><a href="#about">About Us</a></li>
+                    <li><a href="#">Careers</a></li>
+                    <li><a href="#">Press Kit</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Resources</h3>
+                <ul>
+                    <li><a href="#">Blog</a></li>
+                    <li><a href="#">Help Center</a></li>
+                    <li><a href="#">Carbon Calculator</a></li>
+                    <li><a href="#">Certification Guide</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 CarbonGo. All rights reserved. | <a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a></p>
+        </div>
+    </footer>
+
+    <script>
+        // Navbar scroll effect
+        window.addEventListener('scroll', function() {
+            const navbar = document.getElementById('navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        // Mobile menu toggle
+        function toggleMenu() {
+            const navLinks = document.getElementById('navLinks');
+            navLinks.classList.toggle('active');
+        }
+
+        // Close mobile menu when clicking a link
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                document.getElementById('navLinks').classList.remove('active');
+            });
+        });
+
+        // Filter buttons
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+
+        // Login modal placeholder
+        function showLoginModal() {
+            alert('Login/Signup functionality would be implemented here.\n\nThis is a demo website. In production, this would open a modal or redirect to an authentication page.');
+        }
+
+        // Contact form submission
+        function handleContactSubmit(event) {
+            event.preventDefault();
+            alert('Thank you for your message! We\'ll get back to you soon.\n\nThis is a demo form. In production, this would send your message to our team.');
+            event.target.reset();
+        }
+
+        // Smooth scroll with offset for fixed navbar
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    const offset = 80;
+                    const targetPosition = target.offsetTop - offset;
+                    window.scrollTo({
+                        top: targetPosition,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+
+        // Fade in animation on scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver(function(entries) {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.feature-card, .project-card, .step, .team-member').forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(30px)';
+            el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            observer.observe(el);
+        });
+    </script>
+</body>
+</html>
